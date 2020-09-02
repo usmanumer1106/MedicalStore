@@ -1,0 +1,1030 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MedicalStoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblmedicine">
+          <Key>
+            <PropertyRef Name="Medicine_ID" />
+          </Key>
+          <Property Name="Medicine_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Medicine_Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Price_Per_Unit" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Location" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Expiry_Date" Type="smalldatetime" Nullable="false" />
+          <Property Name="Company_ID" Type="int" />
+          <Property Name="Image" Type="varchar(max)" />
+          <Property Name="Description" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblmedicinecompany">
+          <Key>
+            <PropertyRef Name="Company_ID" />
+          </Key>
+          <Property Name="Company_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Company_Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Company_Contact_Number" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblorder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="firstname" Type="varchar" MaxLength="50" />
+          <Property Name="lastname" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="phone" Type="varchar" MaxLength="50" />
+          <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="postalcode" Type="varchar" MaxLength="50" />
+          <Property Name="address" Type="varchar(max)" />
+          <Property Name="status" Type="int" />
+        </EntityType>
+        <EntityType Name="tblorderdetail">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="orderid" Type="int" />
+          <Property Name="productname" Type="varchar" MaxLength="50" />
+          <Property Name="productprice" Type="varchar" MaxLength="50" />
+          <Property Name="productquantity" Type="int" />
+          <Property Name="productimage" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tblusers">
+          <Key>
+            <PropertyRef Name="User_ID" />
+          </Key>
+          <Property Name="User_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="First_Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Last_Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email_Address" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date_Of_Birth" Type="smalldatetime" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Type_ID" Type="int" Nullable="false" />
+          <Property Name="Mobile_No" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="20" />
+          <Property Name="State" Type="varchar" MaxLength="20" />
+          <Property Name="Zip_Code" Type="int" />
+        </EntityType>
+        <EntityType Name="tblusertype">
+          <Key>
+            <PropertyRef Name="Type_ID" />
+          </Key>
+          <Property Name="Type_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type_Name" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblmedicine_tblmedicinecompany">
+          <End Role="tblmedicinecompany" Type="Self.tblmedicinecompany" Multiplicity="0..1" />
+          <End Role="tblmedicine" Type="Self.tblmedicine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblmedicinecompany">
+              <PropertyRef Name="Company_ID" />
+            </Principal>
+            <Dependent Role="tblmedicine">
+              <PropertyRef Name="Company_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblorderdetail_tblorder">
+          <End Role="tblorder" Type="Self.tblorder" Multiplicity="0..1" />
+          <End Role="tblorderdetail" Type="Self.tblorderdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblorder">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblorderdetail">
+              <PropertyRef Name="orderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblusers_tblusers">
+          <End Role="tblusertype" Type="Self.tblusertype" Multiplicity="1" />
+          <End Role="tblusers" Type="Self.tblusers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblusertype">
+              <PropertyRef Name="Type_ID" />
+            </Principal>
+            <Dependent Role="tblusers">
+              <PropertyRef Name="Type_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Check_Company_Name" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="comanyname" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Check_ForgotEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Check_Medicine_Name" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="meicinename" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Check_User_Type" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usertype" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CheckEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Delet_User_Type" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="typeid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Delete_Medicine" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="medicineid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Delete_Medicine_Company" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="midicinecompanyid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Delete_User" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Display_Order" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Display_Order_By_Email" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Display_Order_Detail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DoLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="DoLoginAdmin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Get_Medicine" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Get_Medicine_By_Id" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Get_Medicine_Company" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Get_Order_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Get_User_Type" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Get_Users" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Seacrch_Medicine" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="medicine" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Seacrch_User_Type" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="usertype" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Search_Company" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="company" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Search_User" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Select_Order_By_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="MedicalStoreModelStoreContainer">
+          <EntitySet Name="tblmedicine" EntityType="Self.tblmedicine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblmedicinecompany" EntityType="Self.tblmedicinecompany" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblorder" EntityType="Self.tblorder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblorderdetail" EntityType="Self.tblorderdetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblusers" EntityType="Self.tblusers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblusertype" EntityType="Self.tblusertype" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblmedicine_tblmedicinecompany" Association="Self.FK_tblmedicine_tblmedicinecompany">
+            <End Role="tblmedicinecompany" EntitySet="tblmedicinecompany" />
+            <End Role="tblmedicine" EntitySet="tblmedicine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblorderdetail_tblorder" Association="Self.FK_tblorderdetail_tblorder">
+            <End Role="tblorder" EntitySet="tblorder" />
+            <End Role="tblorderdetail" EntitySet="tblorderdetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblusers_tblusers" Association="Self.FK_tblusers_tblusers">
+            <End Role="tblusertype" EntitySet="tblusertype" />
+            <End Role="tblusers" EntitySet="tblusers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MedicalStoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblmedicine">
+          <Key>
+            <PropertyRef Name="Medicine_ID" />
+          </Key>
+          <Property Name="Medicine_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Medicine_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Price_Per_Unit" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Expiry_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Company_ID" Type="Int32" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblmedicinecompany" Relationship="Self.FK_tblmedicine_tblmedicinecompany" FromRole="tblmedicine" ToRole="tblmedicinecompany" />
+        </EntityType>
+        <EntityType Name="tblmedicinecompany">
+          <Key>
+            <PropertyRef Name="Company_ID" />
+          </Key>
+          <Property Name="Company_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Company_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Company_Contact_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblmedicines" Relationship="Self.FK_tblmedicine_tblmedicinecompany" FromRole="tblmedicinecompany" ToRole="tblmedicine" />
+        </EntityType>
+        <EntityType Name="tblorder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="postalcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Int32" />
+          <NavigationProperty Name="tblorderdetails" Relationship="Self.FK_tblorderdetail_tblorder" FromRole="tblorder" ToRole="tblorderdetail" />
+        </EntityType>
+        <EntityType Name="tblorderdetail">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="orderid" Type="Int32" />
+          <Property Name="productname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="productprice" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="productquantity" Type="Int32" />
+          <Property Name="productimage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblorder" Relationship="Self.FK_tblorderdetail_tblorder" FromRole="tblorderdetail" ToRole="tblorder" />
+        </EntityType>
+        <EntityType Name="tbluser">
+          <Key>
+            <PropertyRef Name="User_ID" />
+          </Key>
+          <Property Name="User_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="First_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Last_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email_Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Date_Of_Birth" Type="DateTime" Precision="0" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Type_ID" Type="Int32" Nullable="false" />
+          <Property Name="Mobile_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Zip_Code" Type="Int32" />
+          <NavigationProperty Name="tblusertype" Relationship="Self.FK_tblusers_tblusers" FromRole="tblusers" ToRole="tblusertype" />
+        </EntityType>
+        <EntityType Name="tblusertype">
+          <Key>
+            <PropertyRef Name="Type_ID" />
+          </Key>
+          <Property Name="Type_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblusers" Relationship="Self.FK_tblusers_tblusers" FromRole="tblusertype" ToRole="tblusers" />
+        </EntityType>
+        <Association Name="FK_tblmedicine_tblmedicinecompany">
+          <End Role="tblmedicinecompany" Type="Self.tblmedicinecompany" Multiplicity="0..1" />
+          <End Role="tblmedicine" Type="Self.tblmedicine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblmedicinecompany">
+              <PropertyRef Name="Company_ID" />
+            </Principal>
+            <Dependent Role="tblmedicine">
+              <PropertyRef Name="Company_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblorderdetail_tblorder">
+          <End Role="tblorder" Type="Self.tblorder" Multiplicity="0..1" />
+          <End Role="tblorderdetail" Type="Self.tblorderdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblorder">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblorderdetail">
+              <PropertyRef Name="orderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblusers_tblusers">
+          <End Role="tblusertype" Type="Self.tblusertype" Multiplicity="1" />
+          <End Role="tblusers" Type="Self.tbluser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblusertype">
+              <PropertyRef Name="Type_ID" />
+            </Principal>
+            <Dependent Role="tblusers">
+              <PropertyRef Name="Type_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MedicalStoreEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblmedicines" EntityType="Self.tblmedicine" />
+          <EntitySet Name="tblmedicinecompanies" EntityType="Self.tblmedicinecompany" />
+          <EntitySet Name="tblorders" EntityType="Self.tblorder" />
+          <EntitySet Name="tblorderdetails" EntityType="Self.tblorderdetail" />
+          <EntitySet Name="tblusers" EntityType="Self.tbluser" />
+          <EntitySet Name="tblusertypes" EntityType="Self.tblusertype" />
+          <AssociationSet Name="FK_tblmedicine_tblmedicinecompany" Association="Self.FK_tblmedicine_tblmedicinecompany">
+            <End Role="tblmedicinecompany" EntitySet="tblmedicinecompanies" />
+            <End Role="tblmedicine" EntitySet="tblmedicines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblorderdetail_tblorder" Association="Self.FK_tblorderdetail_tblorder">
+            <End Role="tblorder" EntitySet="tblorders" />
+            <End Role="tblorderdetail" EntitySet="tblorderdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblusers_tblusers" Association="Self.FK_tblusers_tblusers">
+            <End Role="tblusertype" EntitySet="tblusertypes" />
+            <End Role="tblusers" EntitySet="tblusers" />
+          </AssociationSet>
+          <FunctionImport Name="Check_Company_Name" ReturnType="Collection(MedicalStoreModel.Check_Company_Name_Result)">
+            <Parameter Name="comanyname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Check_ForgotEmail" ReturnType="Collection(MedicalStoreModel.Check_ForgotEmail_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Check_Medicine_Name" ReturnType="Collection(MedicalStoreModel.Check_Medicine_Name_Result)">
+            <Parameter Name="meicinename" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Check_User_Type" ReturnType="Collection(MedicalStoreModel.Check_User_Type_Result)">
+            <Parameter Name="usertype" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CheckEmail" ReturnType="Collection(MedicalStoreModel.CheckEmail_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Delet_User_Type">
+            <Parameter Name="typeid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Delete_Medicine">
+            <Parameter Name="medicineid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Delete_Medicine_Company">
+            <Parameter Name="midicinecompanyid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Delete_User">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Display_Order" ReturnType="Collection(MedicalStoreModel.Display_Order_Result)" />
+          <FunctionImport Name="Display_Order_By_Email" ReturnType="Collection(MedicalStoreModel.Display_Order_By_Email_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Display_Order_Detail" ReturnType="Collection(MedicalStoreModel.Display_Order_Detail_Result)">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DoLogin" ReturnType="Collection(MedicalStoreModel.DoLogin_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DoLoginAdmin" ReturnType="Collection(MedicalStoreModel.DoLoginAdmin_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Get_Medicine" ReturnType="Collection(MedicalStoreModel.Get_Medicine_Result)" />
+          <FunctionImport Name="Get_Medicine_By_Id" ReturnType="Collection(MedicalStoreModel.Get_Medicine_By_Id_Result)">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Get_Medicine_Company" ReturnType="Collection(MedicalStoreModel.Get_Medicine_Company_Result)" />
+          <FunctionImport Name="Get_Order_ID" ReturnType="Collection(MedicalStoreModel.Get_Order_ID_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Get_User_Type" ReturnType="Collection(MedicalStoreModel.Get_User_Type_Result)" />
+          <FunctionImport Name="Get_Users" ReturnType="Collection(MedicalStoreModel.Get_Users_Result)" />
+          <FunctionImport Name="Seacrch_Medicine" ReturnType="Collection(MedicalStoreModel.Seacrch_Medicine_Result)">
+            <Parameter Name="medicine" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Seacrch_User_Type" ReturnType="Collection(MedicalStoreModel.Seacrch_User_Type_Result)">
+            <Parameter Name="usertype" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Search_Company" ReturnType="Collection(MedicalStoreModel.Search_Company_Result)">
+            <Parameter Name="company" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Search_User" ReturnType="Collection(MedicalStoreModel.Search_User_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Select_Order_By_ID" ReturnType="Collection(MedicalStoreModel.Select_Order_By_ID_Result)">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="Check_Company_Name_Result">
+          <Property Type="Int32" Name="Company_ID" Nullable="false" />
+          <Property Type="String" Name="Company_Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Company_Contact_Number" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Check_ForgotEmail_Result">
+          <Property Type="Int32" Name="User_ID" Nullable="false" />
+          <Property Type="String" Name="First_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Last_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Email_Address" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date_Of_Birth" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="Type_ID" Nullable="false" />
+          <Property Type="String" Name="Mobile_No" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="State" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="Zip_Code" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Check_Medicine_Name_Result">
+          <Property Type="Int32" Name="Medicine_ID" Nullable="false" />
+          <Property Type="String" Name="Medicine_Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Price_Per_Unit" Nullable="false" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="String" Name="Location" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Expiry_Date" Nullable="false" Precision="16" />
+          <Property Type="Int32" Name="Company_ID" Nullable="true" />
+          <Property Type="String" Name="Image" Nullable="true" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Check_User_Type_Result">
+          <Property Type="Int32" Name="Type_ID" Nullable="false" />
+          <Property Type="String" Name="Type_Name" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="CheckEmail_Result">
+          <Property Type="Int32" Name="User_ID" Nullable="false" />
+          <Property Type="String" Name="First_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Last_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Email_Address" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date_Of_Birth" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="Type_ID" Nullable="false" />
+          <Property Type="String" Name="Mobile_No" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="State" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="Zip_Code" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Display_Order_Result">
+          <Property Type="String" Name="address" Nullable="true" />
+          <Property Type="String" Name="city" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="firstname" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="lastname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="phone" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="postalcode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="9" />
+        </ComplexType>
+        <ComplexType Name="Display_Order_By_Email_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="firstname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="lastname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="phone" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="city" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="postalcode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="true" />
+          <Property Type="Int32" Name="status" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Display_Order_Detail_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="Int32" Name="orderid" Nullable="true" />
+          <Property Type="String" Name="productname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="productprice" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="productquantity" Nullable="true" />
+          <Property Type="String" Name="productimage" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="DoLogin_Result">
+          <Property Type="Int32" Name="User_ID" Nullable="false" />
+          <Property Type="String" Name="First_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Last_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Email_Address" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date_Of_Birth" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="Type_ID" Nullable="false" />
+          <Property Type="String" Name="Mobile_No" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="State" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="Zip_Code" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="DoLoginAdmin_Result">
+          <Property Type="Int32" Name="User_ID" Nullable="false" />
+          <Property Type="String" Name="First_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Last_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Email_Address" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date_Of_Birth" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="Type_ID" Nullable="false" />
+          <Property Type="String" Name="Mobile_No" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="State" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="Zip_Code" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Get_Medicine_Result">
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Company_ID" Nullable="true" />
+          <Property Type="DateTime" Name="Expiry_Date" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Location" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Image" Nullable="true" />
+          <Property Type="Int32" Name="Medicine_ID" Nullable="false" />
+          <Property Type="String" Name="Medicine_Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Price_Per_Unit" Nullable="false" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="String" Name="Company_Name" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Get_Medicine_By_Id_Result">
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Company_ID" Nullable="true" />
+          <Property Type="DateTime" Name="Expiry_Date" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Location" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Image" Nullable="true" />
+          <Property Type="Int32" Name="Medicine_ID" Nullable="false" />
+          <Property Type="String" Name="Medicine_Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Price_Per_Unit" Nullable="false" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="String" Name="Company_Name" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Get_Medicine_Company_Result">
+          <Property Type="Int32" Name="Company_ID" Nullable="false" />
+          <Property Type="String" Name="Company_Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Company_Contact_Number" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Get_Order_ID_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="firstname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="lastname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="phone" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="city" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="postalcode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="true" />
+          <Property Type="Int32" Name="status" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Get_User_Type_Result">
+          <Property Type="Int32" Name="Type_ID" Nullable="false" />
+          <Property Type="String" Name="Type_Name" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="Get_Users_Result">
+          <Property Type="String" Name="State" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="Zip_Code" Nullable="true" />
+          <Property Type="Int32" Name="User_ID" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Type_ID" Nullable="false" />
+          <Property Type="DateTime" Name="Date_Of_Birth" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Email_Address" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="First_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Last_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Mobile_No" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Type_Name" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="Seacrch_Medicine_Result">
+          <Property Type="String" Name="Image" Nullable="true" />
+          <Property Type="Int32" Name="Company_ID" Nullable="true" />
+          <Property Type="DateTime" Name="Expiry_Date" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Location" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Medicine_ID" Nullable="false" />
+          <Property Type="String" Name="Medicine_Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Price_Per_Unit" Nullable="false" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="String" Name="Company_Name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Seacrch_User_Type_Result">
+          <Property Type="Int32" Name="Type_ID" Nullable="false" />
+          <Property Type="String" Name="Type_Name" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="Search_Company_Result">
+          <Property Type="Int32" Name="Company_ID" Nullable="false" />
+          <Property Type="String" Name="Company_Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Company_Contact_Number" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Search_User_Result">
+          <Property Type="Int32" Name="User_ID" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Type_ID" Nullable="false" />
+          <Property Type="DateTime" Name="Date_Of_Birth" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Email_Address" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="First_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Last_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Mobile_No" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Type_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="Select_Order_By_ID_Result">
+          <Property Type="String" Name="address" Nullable="true" />
+          <Property Type="String" Name="city" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="firstname" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="lastname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="phone" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="postalcode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="9" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MedicalStoreModelStoreContainer" CdmEntityContainer="MedicalStoreEntities">
+          <EntitySetMapping Name="tblmedicines">
+            <EntityTypeMapping TypeName="MedicalStoreModel.tblmedicine">
+              <MappingFragment StoreEntitySet="tblmedicine">
+                <ScalarProperty Name="Medicine_ID" ColumnName="Medicine_ID" />
+                <ScalarProperty Name="Medicine_Name" ColumnName="Medicine_Name" />
+                <ScalarProperty Name="Price_Per_Unit" ColumnName="Price_Per_Unit" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Expiry_Date" ColumnName="Expiry_Date" />
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblmedicinecompanies">
+            <EntityTypeMapping TypeName="MedicalStoreModel.tblmedicinecompany">
+              <MappingFragment StoreEntitySet="tblmedicinecompany">
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+                <ScalarProperty Name="Company_Contact_Number" ColumnName="Company_Contact_Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblorders">
+            <EntityTypeMapping TypeName="MedicalStoreModel.tblorder">
+              <MappingFragment StoreEntitySet="tblorder">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="postalcode" ColumnName="postalcode" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblorderdetails">
+            <EntityTypeMapping TypeName="MedicalStoreModel.tblorderdetail">
+              <MappingFragment StoreEntitySet="tblorderdetail">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="orderid" ColumnName="orderid" />
+                <ScalarProperty Name="productname" ColumnName="productname" />
+                <ScalarProperty Name="productprice" ColumnName="productprice" />
+                <ScalarProperty Name="productquantity" ColumnName="productquantity" />
+                <ScalarProperty Name="productimage" ColumnName="productimage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblusers">
+            <EntityTypeMapping TypeName="MedicalStoreModel.tbluser">
+              <MappingFragment StoreEntitySet="tblusers">
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="Email_Address" ColumnName="Email_Address" />
+                <ScalarProperty Name="Date_Of_Birth" ColumnName="Date_Of_Birth" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Mobile_No" ColumnName="Mobile_No" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip_Code" ColumnName="Zip_Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblusertypes">
+            <EntityTypeMapping TypeName="MedicalStoreModel.tblusertype">
+              <MappingFragment StoreEntitySet="tblusertype">
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Type_Name" ColumnName="Type_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Check_Company_Name" FunctionName="MedicalStoreModel.Store.Check_Company_Name">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Check_Company_Name_Result">
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+                <ScalarProperty Name="Company_Contact_Number" ColumnName="Company_Contact_Number" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Check_ForgotEmail" FunctionName="MedicalStoreModel.Store.Check_ForgotEmail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Check_ForgotEmail_Result">
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="Email_Address" ColumnName="Email_Address" />
+                <ScalarProperty Name="Date_Of_Birth" ColumnName="Date_Of_Birth" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Mobile_No" ColumnName="Mobile_No" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip_Code" ColumnName="Zip_Code" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Check_Medicine_Name" FunctionName="MedicalStoreModel.Store.Check_Medicine_Name">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Check_Medicine_Name_Result">
+                <ScalarProperty Name="Medicine_ID" ColumnName="Medicine_ID" />
+                <ScalarProperty Name="Medicine_Name" ColumnName="Medicine_Name" />
+                <ScalarProperty Name="Price_Per_Unit" ColumnName="Price_Per_Unit" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Expiry_Date" ColumnName="Expiry_Date" />
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Check_User_Type" FunctionName="MedicalStoreModel.Store.Check_User_Type">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Check_User_Type_Result">
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Type_Name" ColumnName="Type_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CheckEmail" FunctionName="MedicalStoreModel.Store.CheckEmail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.CheckEmail_Result">
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="Email_Address" ColumnName="Email_Address" />
+                <ScalarProperty Name="Date_Of_Birth" ColumnName="Date_Of_Birth" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Mobile_No" ColumnName="Mobile_No" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip_Code" ColumnName="Zip_Code" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Delet_User_Type" FunctionName="MedicalStoreModel.Store.Delet_User_Type" />
+          <FunctionImportMapping FunctionImportName="Delete_Medicine" FunctionName="MedicalStoreModel.Store.Delete_Medicine" />
+          <FunctionImportMapping FunctionImportName="Delete_Medicine_Company" FunctionName="MedicalStoreModel.Store.Delete_Medicine_Company" />
+          <FunctionImportMapping FunctionImportName="Delete_User" FunctionName="MedicalStoreModel.Store.Delete_User" />
+          <FunctionImportMapping FunctionImportName="Display_Order" FunctionName="MedicalStoreModel.Store.Display_Order">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Display_Order_Result">
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="postalcode" ColumnName="postalcode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Display_Order_By_Email" FunctionName="MedicalStoreModel.Store.Display_Order_By_Email">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Display_Order_By_Email_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="postalcode" ColumnName="postalcode" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Display_Order_Detail" FunctionName="MedicalStoreModel.Store.Display_Order_Detail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Display_Order_Detail_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="orderid" ColumnName="orderid" />
+                <ScalarProperty Name="productname" ColumnName="productname" />
+                <ScalarProperty Name="productprice" ColumnName="productprice" />
+                <ScalarProperty Name="productquantity" ColumnName="productquantity" />
+                <ScalarProperty Name="productimage" ColumnName="productimage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DoLogin" FunctionName="MedicalStoreModel.Store.DoLogin">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.DoLogin_Result">
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="Email_Address" ColumnName="Email_Address" />
+                <ScalarProperty Name="Date_Of_Birth" ColumnName="Date_Of_Birth" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Mobile_No" ColumnName="Mobile_No" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip_Code" ColumnName="Zip_Code" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DoLoginAdmin" FunctionName="MedicalStoreModel.Store.DoLoginAdmin">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.DoLoginAdmin_Result">
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="Email_Address" ColumnName="Email_Address" />
+                <ScalarProperty Name="Date_Of_Birth" ColumnName="Date_Of_Birth" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Mobile_No" ColumnName="Mobile_No" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip_Code" ColumnName="Zip_Code" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Get_Medicine" FunctionName="MedicalStoreModel.Store.Get_Medicine">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Get_Medicine_Result">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="Expiry_Date" ColumnName="Expiry_Date" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Medicine_ID" ColumnName="Medicine_ID" />
+                <ScalarProperty Name="Medicine_Name" ColumnName="Medicine_Name" />
+                <ScalarProperty Name="Price_Per_Unit" ColumnName="Price_Per_Unit" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Get_Medicine_By_Id" FunctionName="MedicalStoreModel.Store.Get_Medicine_By_Id">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Get_Medicine_By_Id_Result">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="Expiry_Date" ColumnName="Expiry_Date" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Medicine_ID" ColumnName="Medicine_ID" />
+                <ScalarProperty Name="Medicine_Name" ColumnName="Medicine_Name" />
+                <ScalarProperty Name="Price_Per_Unit" ColumnName="Price_Per_Unit" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Get_Medicine_Company" FunctionName="MedicalStoreModel.Store.Get_Medicine_Company">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Get_Medicine_Company_Result">
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+                <ScalarProperty Name="Company_Contact_Number" ColumnName="Company_Contact_Number" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Get_Order_ID" FunctionName="MedicalStoreModel.Store.Get_Order_ID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Get_Order_ID_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="postalcode" ColumnName="postalcode" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Get_User_Type" FunctionName="MedicalStoreModel.Store.Get_User_Type">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Get_User_Type_Result">
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Type_Name" ColumnName="Type_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Get_Users" FunctionName="MedicalStoreModel.Store.Get_Users">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Get_Users_Result">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Zip_Code" ColumnName="Zip_Code" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Date_Of_Birth" ColumnName="Date_Of_Birth" />
+                <ScalarProperty Name="Email_Address" ColumnName="Email_Address" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="Mobile_No" ColumnName="Mobile_No" />
+                <ScalarProperty Name="Type_Name" ColumnName="Type_Name" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Seacrch_Medicine" FunctionName="MedicalStoreModel.Store.Seacrch_Medicine">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Seacrch_Medicine_Result">
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="Expiry_Date" ColumnName="Expiry_Date" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Medicine_ID" ColumnName="Medicine_ID" />
+                <ScalarProperty Name="Medicine_Name" ColumnName="Medicine_Name" />
+                <ScalarProperty Name="Price_Per_Unit" ColumnName="Price_Per_Unit" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Seacrch_User_Type" FunctionName="MedicalStoreModel.Store.Seacrch_User_Type">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Seacrch_User_Type_Result">
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Type_Name" ColumnName="Type_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Search_Company" FunctionName="MedicalStoreModel.Store.Search_Company">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Search_Company_Result">
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+                <ScalarProperty Name="Company_Contact_Number" ColumnName="Company_Contact_Number" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Search_User" FunctionName="MedicalStoreModel.Store.Search_User">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Search_User_Result">
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Type_ID" ColumnName="Type_ID" />
+                <ScalarProperty Name="Date_Of_Birth" ColumnName="Date_Of_Birth" />
+                <ScalarProperty Name="Email_Address" ColumnName="Email_Address" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="Mobile_No" ColumnName="Mobile_No" />
+                <ScalarProperty Name="Type_Name" ColumnName="Type_Name" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Select_Order_By_ID" FunctionName="MedicalStoreModel.Store.Select_Order_By_ID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MedicalStoreModel.Select_Order_By_ID_Result">
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="postalcode" ColumnName="postalcode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,17 @@
+﻿body {
+}
+div{
+   background-color:gray;
+}
+#lab{
+    text-align:center;
+    font-size:medium;
+    font:800;
+}
+#dv1{
+    margin-top:auto;
+    padding-top:inherit;
+}
+#logindiv{
+    justify-content:center;
+}

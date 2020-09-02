@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="aa38e7eb652443028d620ea7ea0ccb5d" Name="Diagram1">
+        <EntityTypeShape EntityType="MedicalStoreModel.tblmedicine" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalStoreModel.tblmedicinecompany" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalStoreModel.tblorder" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalStoreModel.tblorderdetail" Width="1.5" PointX="8" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalStoreModel.tbluser" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalStoreModel.tblusertype" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <AssociationConnector Association="MedicalStoreModel.FK_tblmedicine_tblmedicinecompany" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalStoreModel.FK_tblorderdetail_tblorder" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalStoreModel.FK_tblusers_tblusers" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

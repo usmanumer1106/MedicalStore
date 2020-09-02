@@ -1,0 +1,52 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>
+        <asp:ContentPlaceHolder id="title" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </title>
+    <link href="css/MasterPage.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <script src="js/bootstrap.js"></script>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body style="background-image:url(Pictures/Online-Medical-Store-visakhapatnam.jpg)">
+    <form id="form1" runat="server">
+        <div class="wrapper container navbar-toggler">
+            <div class="menue">
+                <ul>
+                    <li class="navigtion_first_item"><a href="homepage.aspx">Home Page</a></li>
+                    <li class="navitem_s"><a href="myaccount.aspx">My Account</a></li>
+                    <li class="navitem_s" ><a href="listuser.aspx">Users</a></li>
+                 
+                    <li class="navitem_s" ><a href="listusertype.aspx">User Type</a></li>
+                   
+                    <li class="navitem_s" ><a href="listmedicine.aspx">Medicine</a></li>
+              
+                    <li class="navitem_s" ><a href="listcompany.aspx">Company</a></li>
+
+                    <li class="navitem_s" ><a href="displayorder.aspx">Orders</a></li>
+               
+                    <li class="navigtion_last_item" style="width:95px; border-right: 0px; background-color: rgb(10,110,178); border-radius: 0px 5px 5px 0px;  border-left: 1px solid rgb(67,153,200); float:right;"><a href="logoutpage.aspx">Logout</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <div class="content">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+            <div class="clear"></div>
+            <div class="footer">
+                <h2>Copyright@2020 || Contact us at Email:usmanumer1106@gmail.com Phone#:+923208500106</h2>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+
